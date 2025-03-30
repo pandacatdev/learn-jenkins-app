@@ -22,5 +22,15 @@ pipeline {
                 '''
             }
         }
+        stage('Test') {
+            steps {
+                sh '''
+                    echo "Running tests..."
+                    test -f build/index.html || (echo "Build failed, skipping tests" && exit 1)
+                    npm test
+                    echo "Tests completed successfully"
+                '''
+            }
+        }
     }
 }
