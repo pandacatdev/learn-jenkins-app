@@ -2,16 +2,25 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
-            steps {
-                sh 'echo "Hello from Jenkins"'
+        stage('Build') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
             }
-        }
-        stage('Who am I') {
             steps {
-                sh 'whoami'
+                sh '''
+                    npm --version
+                    node --version
+                    ls -la
+                    echo "Installing dependencies..."
+                    npm ci
+                    echo "Building the project..."
+                    npm run build
+                    ls -la
+                '''
             }
         }
     }
 }
-// This is a simple Jenkins pipeline script that defines two stages: "Hello" and "Who am I".
