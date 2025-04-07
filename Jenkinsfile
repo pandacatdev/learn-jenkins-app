@@ -72,6 +72,9 @@ pipeline {
         always {
             // Change default path to jest-results to avoid conflicts between junit and playwright
             junit 'jest-results/junit.xml'
+
+            // Publish Playwright HTML report
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
         }
     }
 }
