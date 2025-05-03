@@ -88,7 +88,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy Staging') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -96,6 +96,29 @@ pipeline {
                 }
             }
             steps {
+                sh '''
+                    echo "Deploying the project to staging..."
+                    npm install netlify-cli
+                    node_modules/.bin/netlify --version
+                    node_modules/.bin/netlify status
+
+                    echo "Deploy without --prod flag to create a draft deploy"
+                    node_modules/.bin/netlify deploy --dir build
+                '''
+            }
+        }
+
+        stage('Deploy Prod') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                    input message: 'Are you sure to deploy?', ok: 'Deploy'
+                }
                 sh '''
                     echo "Deploying the project..."
                     npm install netlify-cli
