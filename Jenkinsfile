@@ -117,7 +117,7 @@ pipeline {
             }
 
             environment {
-               CI_ENVIRONMENT_URL = "https://$NETLIFY_SITE_ID.netlify.app"
+               CI_ENVIRONMENT_URL = "https://beamish-kitsune-b93ae9.netlify.app"
             }
 
             steps {
